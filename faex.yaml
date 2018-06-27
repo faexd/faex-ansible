@@ -1,0 +1,18 @@
+---
+
+-  name: Faex setup script
+   hosts: local_serv
+   remote_user: kkostya
+
+   vars:
+      uname: kkostya
+      faex_clone_path: /home/{{uname}}/projects/crypto_investing
+      faex_path: "{{faex_clone_path}}/faex"
+      lib_deps_path: "{{faex_path}}/gdax/lib-deps"
+
+   roles:
+      - faex_init
+      - faex_deps
+      - faex_compile
+      - faex_ui
+

@@ -1,0 +1,37 @@
+---
+
+-  name: Update ubuntu
+   become: yes
+   become_user: root
+
+   apt: update_cache=yes upgrade=yes
+
+-  name: Install git and g++ and libcurl
+   become: yes
+   become_user: root
+
+   apt:
+      name: git
+      update_cache: no
+   apt:
+      name: gcc
+      update_cache: no
+   apt:
+      name: libcurl4-openssl-dev
+      update_cache: no
+   apt:
+      name: libboost-all-dev
+      update_cache: no
+   apt:
+      name: libsqlite3-dev
+      update_cache: no
+
+-  name: mk faex dir
+   shell: mkdir -p "{{ faex_clone_path }}"
+
+-  name: clone faex
+   git:
+      repo: git@github.com:rpasta42/faex.git
+      dest: "{{ faex_path }}"
+
+

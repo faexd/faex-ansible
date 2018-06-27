@@ -1,0 +1,79 @@
+---
+
+-  name: make lib-deps dir
+   shell: mkdir -p "{{lib_deps_path}}"
+
+-  name: clone date lib
+   git:
+      repo: git@github.com:faexd/date.git
+      dest: "{{lib_deps_path}}/date"
+
+-  name: clone PolyM lib
+   git:
+      repo: git@github.com:faexd/PolyM.git
+      dest: "{{lib_deps_path}}/PolyM"
+
+-  name: clone uWebSockets lib
+   git:
+      repo: git@github.com:faexd/uWebSockets.git
+      dest: "{{lib_deps_path}}/uWebSockets"
+
+-  name: clone json lib
+   git:
+      repo: git@github.com:faexd/json.git
+      dest: "{{lib_deps_path}}/json"
+
+-  name: clone SQLiteCpp lib
+   git:
+      repo: git@github.com:faexd/SQLiteCpp.git
+      dest: "{{lib_deps_path}}/SQLiteCpp"
+
+
+
+
+
+-  name: compile SQLiteCpp lib
+   shell: cd "{{lib_deps_path}}/SQLiteCpp"; ./build.sh
+-  name: install SQLiteCpp
+   become: yes
+   become_user: root
+   shell: cd "{{lib_deps_path}}/SQLiteCpp/build"; make install
+
+
+#https://github.com/HowardHinnant/date/issues/313
+#https://github.com/HowardHinnant/date/pull/265
+-  name: compile timezone (lib-deps/date)
+   shell: cd "{{lib_deps_path}}/date"; mkdir build; cd build; cmake -DCMAKE_CXX_FLAGS=-fPIC ..; make
+-  name: install timezone (lib-deps/date)
+   become: yes
+   become_user: root
+   shell: cd "{{lib_deps_path}}/date/build"; make install
+
+
+-  name: compile uWebSockets
+   shell: cd "{{lib_deps_path}}/uWebSockets"; make
+-  name: install uWebSockets
+   become: yes
+   become_user: root
+   shell: cd "{{lib_deps_path}}/uWebSockets"; make install
+
+-  name: cp json.hpp
+   shell: cd "{{lib_deps_path}}"; cp json/single_include/nlohmann/json.hpp .
+
+-  name: compile polym
+   shell: cd "{{lib_deps_path}}/PolyM"; make libpolym.a
+
+
+-  name: rm old links
+   shell: cd "{{faex_path}}"; rm -f gdax/importer_csrc/faex gdax/dw_src/faex gdax/faex gdax/share_src/faex
+
+-  name: make links1
+   shell: cd "{{faex_path}}"; ln -fs ../../. gdax/importer_csrc/faex
+-  name: make links2
+   shell: cd "{{faex_path}}"; ln -fs ../../. gdax/dw_src/faex
+-  name: make links3
+   shell: cd "{{faex_path}}"; ln -fs ../. gdax/faex
+-  name: make links4
+   shell: cd "{{faex_path}}"; ln -fs ../../. gdax/share_src/faex
+
+

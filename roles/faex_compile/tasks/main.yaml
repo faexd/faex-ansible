@@ -1,0 +1,8 @@
+---
+
+- name: compile faex dw
+  shell: cd "{{faex_path}}"/gdax; make bin
+
+- name: compile faex lib
+  shell: cd "{{faex_path}}"/gdax; make lib1
+
