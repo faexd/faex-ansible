@@ -76,4 +76,3 @@
 -  name: make links4
    shell: cd "{{faex_path}}"; ln -fs ../../. gdax/share_src/faex
 
-

@@ -6,3 +6,6 @@
 - name: compile faex lib
   shell: cd "{{faex_path}}"/gdax; make lib1
 
+-  name: create faex_gdax_importer.so link for mlpi
+   shell: cd "{{faex_path}}"; ln -fs ../gdax/faex_gdax_importer.so mlpi/faex_gdax_importer.so
+
